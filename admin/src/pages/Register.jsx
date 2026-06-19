@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Eye, EyeOff, UserPlus, Mail, Lock, User, Layers } from 'lucide-react';
 import api from '../api/api';
-import toast from 'react-hot-toast';
+import { toast } from 'sonner';
 
 export default function Register() {
   const [formData, setFormData] = useState({ name: '', email: '', password: '' });
@@ -12,6 +12,20 @@ export default function Register() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (!formData.name || formData.name.trim().length < 2) {
+      toast.error('Please enter a valid name (at least 2 characters)');
+      return;
+    }
+    if (!formData.email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+      toast.error('Please enter a valid email address');
+      return;
+    }
+    if (!formData.password || formData.password.length < 6) {
+      toast.error('Password must be at least 6 characters long');
+      return;
+    }
+
     setLoading(true);
     try {
       await api.post('/users/register', formData);
@@ -36,12 +50,12 @@ export default function Register() {
             <Layers size={22} className="text-white" />
           </div>
           <span className="text-2xl font-extrabold tracking-tight bg-gradient-to-r from-violet-400 to-blue-400 bg-clip-text text-transparent">
-            AdminPanel
+            Sunilvi.dev Admin
           </span>
         </div>
 
         {/* Card */}
-        <div className="bg-white/[0.04] backdrop-blur-2xl border border-white/[0.08] rounded-2xl p-8 shadow-2xl shadow-black/40">
+        <div className="bg-[#0a0a0f]/80 backdrop-blur-2xl border border-white/10 rounded-2xl p-8 shadow-2xl shadow-black/60">
           <div className="text-center mb-6">
             <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-violet-500/20 to-blue-500/20 border border-violet-500/20 flex items-center justify-center mx-auto mb-3">
               <UserPlus size={22} className="text-violet-400" />

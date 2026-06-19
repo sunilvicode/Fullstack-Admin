@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: fullstack-admin-api
+    env: node
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 8000
+      - key: JWT_SECRET
+        generateValue: true
+      - key: MONGO_URI
+        sync: false # Requires manual entry in Render dashboard

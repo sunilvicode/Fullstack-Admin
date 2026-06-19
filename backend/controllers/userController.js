@@ -3,9 +3,9 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import crypto from "crypto";
 import { sendOtpEmail } from "../utils/emailService.js";
+import asyncHandler from "express-async-handler";
 
-export const registerUser = async (req, res) => {
-  try {
+export const registerUser = asyncHandler(async (req, res) => {
     const { name, email, password } = req.body;
 
     const existingUser = await User.findOne({ email });
@@ -16,14 +16,10 @@ export const registerUser = async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, 10);
     await User.create({ name, email, password: hashedPassword });
 
-    res.status(201).json({ message: "User Registered", success: true });
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-};
+  res.status(201).json({ message: "User Registered", success: true });
+});
 
-export const loginUser = async (req, res) => {
-  try {
+export const loginUser = asyncHandler(async (req, res) => {
     const { email, password } = req.body;
 
     const user = await User.findOne({ email });
@@ -40,28 +36,20 @@ export const loginUser = async (req, res) => {
       expiresIn: "7d",
     });
 
-    res.json({
-      message: "Login Successfully",
-      success: true,
-      token,
-      user: { _id: user._id, name: user.name, email: user.email, role: user.role },
-    });
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-};
+  res.json({
+    message: "Login Successfully",
+    success: true,
+    token,
+    user: { _id: user._id, name: user.name, email: user.email, role: user.role },
+  });
+});
 
-export const getAllUser = async (req, res) => {
-  try {
+export const getAllUser = asyncHandler(async (req, res) => {
     const users = await User.find().select("-password -resetToken -resetTokenExpiry");
-    res.status(200).json({ success: true, count: users.length, users });
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-};
+  res.status(200).json({ success: true, count: users.length, users });
+});
 
-export const updateUser = async (req, res) => {
-  try {
+export const updateUser = asyncHandler(async (req, res) => {
     const { id } = req.params;
     const { name, email, password } = req.body;
 
@@ -82,28 +70,20 @@ export const updateUser = async (req, res) => {
       runValidators: true,
     }).select("-password -resetToken -resetTokenExpiry");
 
-    res.status(200).json({ success: true, message: "User updated successfully", user: updated });
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-};
+  res.status(200).json({ success: true, message: "User updated successfully", user: updated });
+});
 
-export const deleteUser = async (req, res) => {
-  try {
+export const deleteUser = asyncHandler(async (req, res) => {
     const { id } = req.params;
     const user = await User.findById(id);
     if (!user) return res.status(404).json({ message: "User not found" });
 
-    await User.findByIdAndDelete(id);
-    res.status(200).json({ success: true, message: "User deleted successfully" });
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-};
+  await User.findByIdAndDelete(id);
+  res.status(200).json({ success: true, message: "User deleted successfully" });
+});
 
 // ── Forgot Password ───────────────────────────────────────────
-export const forgotPassword = async (req, res) => {
-  try {
+export const forgotPassword = asyncHandler(async (req, res) => {
     const { email } = req.body;
 
     const user = await User.findOne({ email });
@@ -144,22 +124,18 @@ export const forgotPassword = async (req, res) => {
       }
     } else {
       // ── DEMO MODE: Return OTP in response ──
-      res.status(200).json({
-        success: true,
-        message: "OTP generated successfully (Demo Mode)",
-        otp,
-        mode: "demo",
-        expiresIn: "15 minutes",
-      });
-    }
-  } catch (error) {
-    res.status(500).json({ message: error.message });
+    res.status(200).json({
+      success: true,
+      message: "OTP generated successfully (Demo Mode)",
+      otp,
+      mode: "demo",
+      expiresIn: "15 minutes",
+    });
   }
-};
+});
 
 // ── Reset Password ────────────────────────────────────────────
-export const resetPassword = async (req, res) => {
-  try {
+export const resetPassword = asyncHandler(async (req, res) => {
     const { email, otp, newPassword } = req.body;
 
     const user = await User.findOne({ email });
@@ -183,15 +159,11 @@ export const resetPassword = async (req, res) => {
       resetTokenExpiry: null,
     });
 
-    res.status(200).json({ success: true, message: "Password reset successfully" });
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-};
+  res.status(200).json({ success: true, message: "Password reset successfully" });
+});
 
 // ── Update Role (superadmin only) ────────────────────────────
-export const updateRole = async (req, res) => {
-  try {
+export const updateRole = asyncHandler(async (req, res) => {
     const { id } = req.params;
     const { role } = req.body;
 
@@ -214,12 +186,9 @@ export const updateRole = async (req, res) => {
       { new: true }
     ).select("-password -resetToken -resetTokenExpiry");
 
-    res.status(200).json({
-      success: true,
-      message: `Role updated to '${role}' successfully`,
-      user: updated,
-    });
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-};
+  res.status(200).json({
+    success: true,
+    message: `Role updated to '${role}' successfully`,
+    user: updated,
+  });
+});

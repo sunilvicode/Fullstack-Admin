@@ -16,11 +16,11 @@ const UserSchema = new mongoose.Schema(
     // ── ROLE FIELD ──────────────────────────────────
     // 'user'       → normal registered user
     // 'admin'      → can view all users
-    // 'superadmin' → full CRUD + can change roles
     role: {
       type: String,
       enum: ["user", "admin", "superadmin"],
       default: "user",
+      index: true,
     },
 
     resetToken: {

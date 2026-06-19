@@ -9,7 +9,7 @@ import {
 } from 'lucide-react';
 import api from '../api/api';
 import { useAuth } from '../context/AuthContext';
-import toast from 'react-hot-toast';
+import { toast } from 'sonner';
 
 /* ─── Helpers ─────────────────────────────────────── */
 const getInitials = (name = '') =>
@@ -394,7 +394,7 @@ export default function Dashboard() {
               <Layers size={18} className="text-white" />
             </div>
             <div>
-              <span className="text-base font-bold tracking-tight bg-gradient-to-r from-violet-400 to-blue-400 bg-clip-text text-transparent">AdminPanel</span>
+              <span className="text-base font-bold tracking-tight bg-gradient-to-r from-violet-400 to-blue-400 bg-clip-text text-transparent">Sunilvi.dev Admin</span>
               <span className="text-slate-600 text-xs ml-2 hidden sm:inline">User Management</span>
             </div>
           </div>

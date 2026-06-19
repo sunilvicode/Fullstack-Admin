@@ -5,7 +5,7 @@ import {
   CheckCircle2, Layers, ShieldCheck, RefreshCw, Copy
 } from 'lucide-react';
 import api from '../api/api';
-import toast from 'react-hot-toast';
+import { toast } from 'sonner';
 
 /* ── Step indicator ────────────────────────────────── */
 function StepBar({ step }) {
@@ -234,7 +234,7 @@ export default function ForgotPassword() {
             <Layers size={22} className="text-white" />
           </div>
           <span className="text-2xl font-extrabold tracking-tight bg-gradient-to-r from-violet-400 to-blue-400 bg-clip-text text-transparent">
-            AdminPanel
+            Sunilvi.dev Admin
           </span>
         </div>
 

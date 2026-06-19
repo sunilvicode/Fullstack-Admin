@@ -2,11 +2,11 @@ import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Eye, EyeOff, Shield, Mail, Lock, Layers } from 'lucide-react';
 import api from '../api/api';
-import toast from 'react-hot-toast';
+import { toast } from 'sonner';
 import { useAuth } from '../context/AuthContext';
 
 export default function Login() {
-  const [formData, setFormData] = useState({ email: '', password: '' });
+  const [formData, setFormData] = useState({ email: 'admin@gmail.com', password: '123456' });
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
@@ -14,6 +14,16 @@ export default function Login() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (!formData.email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+      toast.error('Please enter a valid email address');
+      return;
+    }
+    if (!formData.password || formData.password.length < 6) {
+      toast.error('Password must be at least 6 characters long');
+      return;
+    }
+
     setLoading(true);
     try {
       const res = await api.post('/users/login', formData);
@@ -40,12 +50,12 @@ export default function Login() {
             <Layers size={22} className="text-white" />
           </div>
           <span className="text-2xl font-extrabold tracking-tight bg-gradient-to-r from-violet-400 to-blue-400 bg-clip-text text-transparent">
-            AdminPanel
+            Sunilvi.dev Admin
           </span>
         </div>
 
         {/* Card */}
-        <div className="bg-white/[0.04] backdrop-blur-2xl border border-white/[0.08] rounded-2xl p-8 shadow-2xl shadow-black/40">
+        <div className="bg-[#0a0a0f]/80 backdrop-blur-2xl border border-white/10 rounded-2xl p-8 shadow-2xl shadow-black/60">
           {/* Header */}
           <div className="text-center mb-6">
             <h1 className="text-2xl font-bold text-slate-100 tracking-tight mb-1">
@@ -151,7 +161,7 @@ export default function Login() {
 
         <div className="flex items-center justify-center gap-1.5 mt-5">
           <Shield size={12} className="text-slate-600" />
-          <p className="text-xs text-slate-600">Secured with end-to-end encryption · © 2026 AdminPanel</p>
+          <p className="text-xs text-slate-600">Secured with end-to-end encryption · © 2026 Sunilvi.dev Admin</p>
         </div>
       </div>
     </div>
