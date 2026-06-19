@@ -12,7 +12,7 @@ A secure, high-performance admin dashboard built with React (Vite), Node.js, Exp
 
 ## Architecture & Tech Stack
 - **Frontend:** React 19 (Vite), Tailwind CSS, React Router DOM, Axios
-- **Backend:** Node.js, Express, Mongoose, Helmet, Rate Limiter
+- **Backend:** Node.js, Express, Mongoose
 - **Database:** MongoDB Atlas
 
 ## Environment Variables
