@@ -1,4 +1,4 @@
-# Full-Stack Admin Dashboard
+# SaaS Admin Dashboard
 
 A secure, high-performance admin dashboard built with React (Vite), Node.js, Express, and MongoDB.
 
